@@ -1,7 +1,7 @@
 package com.hotelmanagement.quanlikhachsan.mapper;
 
 import com.hotelmanagement.quanlikhachsan.dto.response.RoomImageResponse;
-import com.hotelmanagement.quanlikhachsan.model.RoomImages;
+import com.hotelmanagement.quanlikhachsan.model.room.RoomImages;
 import org.springframework.stereotype.Component;
 
 @Component

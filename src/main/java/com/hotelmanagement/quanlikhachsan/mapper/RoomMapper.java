@@ -4,9 +4,9 @@ import com.hotelmanagement.quanlikhachsan.dto.request.RoomRequest;
 import com.hotelmanagement.quanlikhachsan.dto.response.RoomResponse;
 import com.hotelmanagement.quanlikhachsan.dto.response.RoomStatusResponse;
 import com.hotelmanagement.quanlikhachsan.dto.response.RoomTypeResponse;
-import com.hotelmanagement.quanlikhachsan.model.Room;
-import com.hotelmanagement.quanlikhachsan.model.RoomStatus;
-import com.hotelmanagement.quanlikhachsan.model.RoomType;
+import com.hotelmanagement.quanlikhachsan.model.room.Room;
+import com.hotelmanagement.quanlikhachsan.model.room.RoomStatus;
+import com.hotelmanagement.quanlikhachsan.model.room.RoomType;
 import org.springframework.stereotype.Component;
 
 import java.util.stream.Collectors;

@@ -5,9 +5,9 @@ import com.hotelmanagement.quanlikhachsan.dto.response.RoomResponse;
 import com.hotelmanagement.quanlikhachsan.exception.ErrorDefinition;
 import com.hotelmanagement.quanlikhachsan.mapper.RoomMapper;
 
-import com.hotelmanagement.quanlikhachsan.model.Room;
-import com.hotelmanagement.quanlikhachsan.model.RoomStatus;
-import com.hotelmanagement.quanlikhachsan.model.RoomType;
+import com.hotelmanagement.quanlikhachsan.model.room.Room;
+import com.hotelmanagement.quanlikhachsan.model.room.RoomStatus;
+import com.hotelmanagement.quanlikhachsan.model.room.RoomType;
 import com.hotelmanagement.quanlikhachsan.repository.RoomRepository;
 import lombok.RequiredArgsConstructor;
 

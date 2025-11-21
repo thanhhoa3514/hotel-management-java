@@ -1,4 +1,4 @@
-package com.hotelmanagement.quanlikhachsan.model;
+package com.hotelmanagement.quanlikhachsan.model.room;
 
 import jakarta.persistence.*;
 import lombok.*;

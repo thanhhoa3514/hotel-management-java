@@ -1,11 +1,8 @@
-package com.hotelmanagement.quanlikhachsan.model;
+package com.hotelmanagement.quanlikhachsan.model.room;
 
 
 import jakarta.persistence.*;
 import lombok.*;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Table(name = "room_types")
 @Entity
