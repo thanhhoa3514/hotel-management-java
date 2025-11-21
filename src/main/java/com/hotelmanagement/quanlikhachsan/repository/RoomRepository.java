@@ -1,7 +1,7 @@
 package com.hotelmanagement.quanlikhachsan.repository;
 
-import com.hotelmanagement.quanlikhachsan.model.Room;
-import com.hotelmanagement.quanlikhachsan.model.RoomStatus;
+import com.hotelmanagement.quanlikhachsan.model.room.Room;
+import com.hotelmanagement.quanlikhachsan.model.room.RoomStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

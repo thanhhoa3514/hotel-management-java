@@ -2,7 +2,7 @@ package com.hotelmanagement.quanlikhachsan.services;
 
 import com.hotelmanagement.quanlikhachsan.dto.request.RoomRequest;
 import com.hotelmanagement.quanlikhachsan.dto.response.RoomResponse;
-import com.hotelmanagement.quanlikhachsan.model.RoomStatus;
+import com.hotelmanagement.quanlikhachsan.model.room.RoomStatus;
 
 import java.util.List;
 import java.util.Optional;

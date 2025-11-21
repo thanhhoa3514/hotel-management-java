@@ -4,7 +4,6 @@ package com.hotelmanagement.quanlikhachsan.controller;
 import com.hotelmanagement.quanlikhachsan.dto.request.RoomRequest;
 import com.hotelmanagement.quanlikhachsan.dto.response.ApiResponse;
 import com.hotelmanagement.quanlikhachsan.dto.response.RoomResponse;
-import com.hotelmanagement.quanlikhachsan.model.RoomStatus;
 import com.hotelmanagement.quanlikhachsan.services.IRoomService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
