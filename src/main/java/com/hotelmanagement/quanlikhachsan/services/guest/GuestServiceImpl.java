@@ -8,6 +8,7 @@ import com.hotelmanagement.quanlikhachsan.model.keycloak.Keycloak;
 import com.hotelmanagement.quanlikhachsan.repository.GuestRepository;
 import com.hotelmanagement.quanlikhachsan.repository.KeycloakRepository;
 import com.hotelmanagement.quanlikhachsan.services.keycloak.IKeycloakService;
+import com.hotelmanagement.quanlikhachsan.exception.ResourceNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,21 +30,23 @@ public class GuestServiceImpl implements IGuestService {
     private final GuestMapper guestMapper;
     @Override
     public GuestResponse createGuest(GuestRequest request) {
-        log.debug("Creating guest for user ID: {}", request.keycloakUserId());
-        Optional<Keycloak> keycloak=findKeycloakByEmail(request.email());
-        log.debug("Logging for user's email: {}", request.email());
+        log.debug("Creating guest for email: {}", request.email());
 
-
-        keycloak=findKeycloakByUserId(request.keycloakUserId());
-
+        // Create user in Keycloak
+        String keycloakUserId = keycloakService.createUser(
+                request.email(),
+                request.password(),
+                request.fullName(), // Assuming first name is full name for now, or split if needed
+                "" // Last name empty for now
+        );
 
         Guest guest = guestMapper.toEntity(request);
+        guest.setKeycloakUserId(UUID.fromString(keycloakUserId));
 
         Guest savedGuest = guestRepository.save(guest);
 
         log.info("Guest created successfully with ID: {}", savedGuest.getId());
         return guestMapper.toResponse(savedGuest);
-
     }
 
     @Override
@@ -61,27 +64,53 @@ public class GuestServiceImpl implements IGuestService {
 
     @Override
     public GuestResponse getGuestByEmail(String email) {
-        return null;
+        log.debug("Fetching guest with email: {}", email);
+        Guest guest = guestRepository.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException("Guest", "email", email));
+        return guestMapper.toResponse(guest);
     }
 
     @Override
     public GuestResponse getGuestByKeycloakUserId(UUID keycloakUserId) {
-        return null;
+        log.debug("Fetching guest with Keycloak User ID: {}", keycloakUserId);
+        Guest guest = guestRepository.findByKeycloakUserId(keycloakUserId)
+                .orElseThrow(() -> new ResourceNotFoundException("Guest", "keycloakUserId", keycloakUserId));
+        return guestMapper.toResponse(guest);
     }
 
     @Override
     public List<GuestResponse> getAllGuests() {
-        return List.of();
+        log.debug("Fetching all guests");
+        return guestRepository.findAll().stream()
+                .map(guestMapper::toResponse)
+                .toList();
     }
 
     @Override
     public GuestResponse updateGuest(String id, GuestRequest request) {
-        return null;
+        log.debug("Updating guest with ID: {}", id);
+        Guest guest = guestRepository.findById(UUID.fromString(id))
+                .orElseThrow(() -> new ResourceNotFoundException("Guest", "id", id));
+
+        // Update fields
+        guest.setFullName(request.fullName());
+        guest.setEmail(request.email());
+        guest.setPhone(request.phone());
+        guest.setAddress(request.address());
+        // Note: Password and Keycloak ID are usually not updated here directly or need special handling
+        // For now, we assume basic profile update.
+
+        Guest updatedGuest = guestRepository.save(guest);
+        return guestMapper.toResponse(updatedGuest);
     }
 
     @Override
     public void deleteGuest(String id) {
-
+        log.debug("Deleting guest with ID: {}", id);
+        if (!guestRepository.existsById(UUID.fromString(id))) {
+            throw new ResourceNotFoundException("Guest", "id", id);
+        }
+        guestRepository.deleteById(UUID.fromString(id));
     }
 
     private Optional<Keycloak> findKeycloakByUserId(UUID keycloakUserId) {

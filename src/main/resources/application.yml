@@ -26,6 +26,12 @@ spring:
           lob:
             non_contextual_creation: true
     open-in-view: false
-
+keycloak:
+  auth-server-url: http://localhost:8180
+  realm: master
+  resource: admin-cli
+  credentials:
+    username: admin
+    password: admin123
 server:
   port: ${SERVER_PORT:8080}

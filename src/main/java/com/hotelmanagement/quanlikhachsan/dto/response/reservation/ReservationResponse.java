@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public record ReservationResponse(
-        Long id,
+        String id,
         GuestResponse guest,
         List<RoomResponse> rooms,
         LocalDate checkIn,
