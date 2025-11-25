@@ -1,4 +1,4 @@
-package com.hotelmanagement.quanlikhachsan.dto.request;
+package com.hotelmanagement.quanlikhachsan.dto.request.room;
 
 
 import jakarta.validation.constraints.NotBlank;

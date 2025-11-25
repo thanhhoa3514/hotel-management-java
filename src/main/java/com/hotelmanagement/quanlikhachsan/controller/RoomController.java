@@ -1,7 +1,7 @@
 package com.hotelmanagement.quanlikhachsan.controller;
 
 
-import com.hotelmanagement.quanlikhachsan.dto.request.RoomRequest;
+import com.hotelmanagement.quanlikhachsan.dto.request.room.RoomRequest;
 import com.hotelmanagement.quanlikhachsan.dto.response.ApiResponse;
 import com.hotelmanagement.quanlikhachsan.dto.response.RoomResponse;
 import com.hotelmanagement.quanlikhachsan.services.IRoomService;

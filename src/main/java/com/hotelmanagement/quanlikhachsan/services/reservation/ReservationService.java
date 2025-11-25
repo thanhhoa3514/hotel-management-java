@@ -1,4 +1,4 @@
 package com.hotelmanagement.quanlikhachsan.services.reservation;
 
-public class ReservationService implements IReservationService {
+public class ReservationService {
 }
