@@ -12,5 +12,6 @@ public record GuestRequest (
 
     String phone,
     String address,
+    @NotBlank(message = "Password is required") String password,
     UUID keycloakUserId){
 }

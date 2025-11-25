@@ -17,18 +17,21 @@ public class ReservationMapper {
     // Reservation mappings
     public ReservationResponse toResponse(Reservation reservation) {
         return new ReservationResponse(
-                reservation.getId(),
+                reservation.getId().toString(),
                 new GuestResponse(reservation.getGuest().getId(), reservation.getGuest().getFullName(),
                         reservation.getGuest().getKeycloakUserId(), reservation.getGuest().getCreatedAt(),
                         reservation.getGuest().getUpdatedAt()),
                 reservation.getReservationRooms().stream()
                         .map(room -> new RoomResponse(
                                 room.getRoom().getId(), room.getRoom().getRoomNumber(),
-                                new RoomTypeResponse(room.getRoom().getId(),
-                                        room.getRoom().getName(),
-                                        room.getRoom().getRoomType().getDescription(),
-                                        room.getRoom().getRoomType().getPricePerNight()),
-                                room.getRoom().getRoomStatus(), room.getRoom().getFloor(), room.getRoom().getNote(),
+                                new RoomTypeResponse(room.getRoom().getType().getId(),
+                                        room.getRoom().getType().getName(),
+                                        room.getRoom().getType().getDescription(),
+                                        room.getRoom().getType().getPricePerNight()),
+                                new com.hotelmanagement.quanlikhachsan.dto.response.RoomStatusResponse(
+                                        room.getRoom().getStatus().getId(),
+                                        room.getRoom().getStatus().getName()),
+                                room.getRoom().getFloor(), room.getRoom().getNote(),
                                 room.getRoom().getImages().stream()
                                         .map(image -> new RoomImageResponse(image.getId(), image.getRoom().getId(),
                                                 image.getImageUrl(), image.getDescription(), image.getIsPrimary(),
