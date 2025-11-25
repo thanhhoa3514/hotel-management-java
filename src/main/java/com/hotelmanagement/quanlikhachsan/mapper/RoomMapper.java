@@ -1,6 +1,6 @@
 package com.hotelmanagement.quanlikhachsan.mapper;
 
-import com.hotelmanagement.quanlikhachsan.dto.request.RoomRequest;
+import com.hotelmanagement.quanlikhachsan.dto.request.room.RoomRequest;
 import com.hotelmanagement.quanlikhachsan.dto.response.RoomResponse;
 import com.hotelmanagement.quanlikhachsan.dto.response.RoomStatusResponse;
 import com.hotelmanagement.quanlikhachsan.dto.response.RoomTypeResponse;

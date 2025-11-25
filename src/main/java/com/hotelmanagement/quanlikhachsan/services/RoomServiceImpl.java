@@ -1,6 +1,6 @@
 package com.hotelmanagement.quanlikhachsan.services;
 
-import com.hotelmanagement.quanlikhachsan.dto.request.RoomRequest;
+import com.hotelmanagement.quanlikhachsan.dto.request.room.RoomRequest;
 import com.hotelmanagement.quanlikhachsan.dto.response.RoomResponse;
 import com.hotelmanagement.quanlikhachsan.exception.ErrorDefinition;
 import com.hotelmanagement.quanlikhachsan.mapper.RoomMapper;
