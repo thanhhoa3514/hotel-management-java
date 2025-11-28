@@ -27,11 +27,13 @@ spring:
             non_contextual_creation: true
     open-in-view: false
 keycloak:
-  auth-server-url: http://localhost:8180
-  realm: master
-  resource: admin-cli
+  auth-server-url: ${KEYCLOAK_AUTH_SERVER_URL:http://localhost:8180}
+  realm: ${KEYCLOAK_REALM:hotel-realm}
+  resource: ${KEYCLOAK_CLIENT_ID:hotel-app}
   credentials:
-    username: admin
-    password: admin123
-server:
-  port: ${SERVER_PORT:8080}
+    username: ${KEYCLOAK_ADMIN_USERNAME:admin}
+    password: ${KEYCLOAK_ADMIN_PASSWORD:admin123}
+
+jwt:
+  secret: ${JWT_SECRET:your-very-secure-256-bit-secret-key-change-this-in-production-please-make-it-long-enough}
+  expiration: ${JWT_EXPIRATION:86400000} # 24 hours in milliseconds
