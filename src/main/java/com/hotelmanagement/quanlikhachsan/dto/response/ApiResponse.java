@@ -6,8 +6,7 @@ public record ApiResponse<T>(
         boolean success,
         String message,
         T data,
-        LocalDateTime timestamp
-) {
+        LocalDateTime timestamp) {
     public static <T> ApiResponse<T> success(T data) {
         return new ApiResponse<>(true, "Operation successful", data, LocalDateTime.now());
     }
@@ -18,5 +17,9 @@ public record ApiResponse<T>(
 
     public static <T> ApiResponse<T> error(String message) {
         return new ApiResponse<>(false, message, null, LocalDateTime.now());
+    }
+
+    public static <T> ApiResponse<T> error(T data, String message) {
+        return new ApiResponse<>(false, message, data, LocalDateTime.now());
     }
 }
