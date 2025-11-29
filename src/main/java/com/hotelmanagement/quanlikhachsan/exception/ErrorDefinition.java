@@ -5,13 +5,26 @@ import org.springframework.http.HttpStatus;
 
 @Getter
 public enum ErrorDefinition {
+    // Room errors
     ROOM_NOT_FOUND("Room not found.", HttpStatus.NOT_FOUND, "ROOM_001"),
     DUPLICATE_ID("Duplicate ID.", HttpStatus.CONFLICT, "ROOM_002"),
-    ROOM_IN_USE("Cannot delete room that is currently occupied or reserved.", HttpStatus.CONFLICT, "ROOM_003");
+    ROOM_IN_USE("Cannot delete room that is currently occupied or reserved.", HttpStatus.CONFLICT, "ROOM_003"),
+
+    // Reservation errors
+    RESERVATION_NOT_FOUND("Reservation not found.", HttpStatus.NOT_FOUND, "RESERVATION_001"),
+    ROOM_NOT_AVAILABLE("One or more rooms are not available for the selected dates.", HttpStatus.CONFLICT,
+            "RESERVATION_002"),
+    INVALID_DATE_RANGE("Check-out date must be after check-in date.", HttpStatus.BAD_REQUEST, "RESERVATION_003"),
+    GUEST_NOT_FOUND("Guest not found.", HttpStatus.NOT_FOUND, "RESERVATION_004"),
+    RESERVATION_ALREADY_CANCELLED("Reservation is already cancelled.", HttpStatus.CONFLICT, "RESERVATION_005"),
+    RESERVATION_ALREADY_CHECKED_IN("Reservation is already checked in.", HttpStatus.CONFLICT, "RESERVATION_006"),
+    RESERVATION_CANNOT_MODIFY("Cannot modify a reservation that is checked out or cancelled.", HttpStatus.CONFLICT,
+            "RESERVATION_007"),
+    PAST_CHECK_IN_DATE("Check-in date cannot be in the past.", HttpStatus.BAD_REQUEST, "RESERVATION_008");
+
     private final String message;
     private final HttpStatus statusCode;
     private final String errorCode;
-
 
     ErrorDefinition(String message, HttpStatus statusCode, String errorCode) {
         this.message = message;

@@ -1,17 +1,20 @@
 package com.hotelmanagement.quanlikhachsan.controller;
 
-
+import com.hotelmanagement.quanlikhachsan.dto.request.room.RoomAvailabilityRequest;
 import com.hotelmanagement.quanlikhachsan.dto.request.room.RoomRequest;
 import com.hotelmanagement.quanlikhachsan.dto.response.ApiResponse;
 import com.hotelmanagement.quanlikhachsan.dto.response.RoomResponse;
+import com.hotelmanagement.quanlikhachsan.dto.response.room.RoomAvailabilityResponse;
 import com.hotelmanagement.quanlikhachsan.services.IRoomService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -61,4 +64,24 @@ public class RoomController {
         return ResponseEntity.ok(ApiResponse.success("Room deleted successfully", null));
     }
 
+    /**
+     * Check availability of specific rooms for a date range.
+     */
+    @PostMapping("/check-availability")
+    public ResponseEntity<ApiResponse<RoomAvailabilityResponse>> checkAvailability(
+            @Valid @RequestBody RoomAvailabilityRequest request) {
+        RoomAvailabilityResponse response = roomService.checkAvailability(request);
+        return ResponseEntity.ok(ApiResponse.success(response));
+    }
+
+    /**
+     * Get all available rooms for a date range.
+     */
+    @GetMapping("/available")
+    public ResponseEntity<ApiResponse<List<RoomResponse>>> getAvailableRooms(
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate checkIn,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate checkOut) {
+        List<RoomResponse> response = roomService.getAvailableRooms(checkIn, checkOut);
+        return ResponseEntity.ok(ApiResponse.success(response));
+    }
 }

@@ -1,8 +1,7 @@
-
 services:
   postgres:
     container_name: hotel_postgres
-    image: postgres
+    image: postgres:15-alpine
     environment:
       POSTGRES_DB: hotelmanagement
       POSTGRES_USER: hoteluser
@@ -11,6 +10,7 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+      - ./init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
     networks:
       - hotel_network
     healthcheck:
@@ -18,7 +18,7 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
-  
+
   keycloak:
     image: quay.io/keycloak/keycloak:23.0.0
     container_name: hotel_keycloak
@@ -59,23 +59,10 @@ services:
     networks:
       - hotel_network
     healthcheck:
-      test: ["CMD", "redis-cli", "--raw", "incr", "ping"]
+      test: ["CMD", "redis-cli", "-a", "${REDIS_PASSWORD:-redis123}", "ping"]
       interval: 10s
       timeout: 3s
       retries: 5
-    restart: unless-stopped
-
-  redis-commander:
-    container_name: hotel_redis_commander
-    image: ghcr.io/joeferner/redis-commander:latest
-    environment:
-      - REDIS_HOSTS=local:redis:6379:0:${REDIS_PASSWORD:-redis123}
-    ports:
-      - "8081:8081"
-    depends_on:
-      - redis
-    networks:
-      - hotel_network
     restart: unless-stopped
 
 volumes:

@@ -1,4 +1,5 @@
 package com.hotelmanagement.quanlikhachsan.model.reservation;
+
 import com.hotelmanagement.quanlikhachsan.model.guest.Guest;
 import jakarta.persistence.*;
 import lombok.*;
@@ -19,13 +20,15 @@ import java.util.UUID;
 @Builder
 public class Reservation {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "guest_id", nullable = false)
     private Guest guest;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", nullable = false)
     private ReservationStatus status;
 
     @Column(name = "check_in", nullable = false)
@@ -48,21 +51,23 @@ public class Reservation {
     @Builder.Default
     private List<ReservationRoom> reservationRooms = new ArrayList<>();
 
-//    @OneToMany(mappedBy = "reservation", cascade = CascadeType.ALL, orphanRemoval = true)
-//    @Builder.Default
-//    private List<ReservationStaff> reservationStaff = new ArrayList<>();
-//
-//    @OneToMany(mappedBy = "reservation", cascade = CascadeType.ALL, orphanRemoval = true)
-//    @Builder.Default
-//    private List<ReservationService> reservationServices = new ArrayList<>();
+    // @OneToMany(mappedBy = "reservation", cascade = CascadeType.ALL, orphanRemoval
+    // = true)
+    // @Builder.Default
+    // private List<ReservationStaff> reservationStaff = new ArrayList<>();
+    //
+    // @OneToMany(mappedBy = "reservation", cascade = CascadeType.ALL, orphanRemoval
+    // = true)
+    // @Builder.Default
+    // private List<ReservationService> reservationServices = new ArrayList<>();
 
-//    @OneToMany(mappedBy = "reservation", cascade = CascadeType.ALL)
-//    @Builder.Default
-//    private List<Payment> payments = new ArrayList<>();
-//
-//    @OneToMany(mappedBy = "reservation", cascade = CascadeType.ALL)
-//    @Builder.Default
-//    private List<Invoice> invoices = new ArrayList<>();
+    // @OneToMany(mappedBy = "reservation", cascade = CascadeType.ALL)
+    // @Builder.Default
+    // private List<Payment> payments = new ArrayList<>();
+    //
+    // @OneToMany(mappedBy = "reservation", cascade = CascadeType.ALL)
+    // @Builder.Default
+    // private List<Invoice> invoices = new ArrayList<>();
 
     @PrePersist
     protected void onCreate() {

@@ -8,7 +8,7 @@ import com.hotelmanagement.quanlikhachsan.exception.AppError;
 import com.hotelmanagement.quanlikhachsan.mapper.RoomMapper;
 import com.hotelmanagement.quanlikhachsan.model.room.Room;
 import com.hotelmanagement.quanlikhachsan.model.room.RoomStatus;
-import com.hotelmanagement.quanlikhachsan.model.room.RoomType;
+
 import com.hotelmanagement.quanlikhachsan.repository.RoomRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -49,8 +49,7 @@ class RoomServiceImplTest {
                 "type-1",
                 "status-1",
                 (short) 1,
-                "Test Room"
-        );
+                "Test Room");
 
         room = new Room();
         room.setId(roomId);
@@ -66,8 +65,7 @@ class RoomServiceImplTest {
                 new RoomStatusResponse("status-1", "Available"),
                 (short) 1,
                 "Test Room",
-                List.of()
-        );
+                List.of());
     }
 
     @Test
