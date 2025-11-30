@@ -199,4 +199,34 @@ public class ReservationController {
         reservationService.deleteReservation(id);
         return ResponseEntity.ok(ApiResponse.success("Reservation deleted successfully", null));
     }
+
+    /**
+     * Check if a room has active reservations.
+     * Returns count of active reservations (PENDING, CONFIRMED, CHECKED_IN).
+     *
+     * @param roomId the room ID
+     * @return active reservations count
+     */
+    @GetMapping("/room/{roomId}/active-count")
+    public ResponseEntity<ApiResponse<RoomActiveReservationsResponse>> checkRoomActiveReservations(
+            @PathVariable String roomId) {
+        log.info("Checking active reservations for room ID: {}", roomId);
+
+        long count = reservationService.countActiveReservationsByRoomId(roomId);
+        boolean hasActiveReservations = count > 0;
+
+        RoomActiveReservationsResponse response = new RoomActiveReservationsResponse(
+                hasActiveReservations,
+                (int) count);
+
+        return ResponseEntity.ok(ApiResponse.success(response));
+    }
+
+    /**
+     * Response DTO for room active reservations check.
+     */
+    private record RoomActiveReservationsResponse(
+            boolean hasActiveReservations,
+            int count) {
+    }
 }

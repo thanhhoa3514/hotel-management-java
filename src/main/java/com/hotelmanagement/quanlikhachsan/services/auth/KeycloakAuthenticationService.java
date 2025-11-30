@@ -101,4 +101,46 @@ public class KeycloakAuthenticationService {
                 .get(userId)
                 .toRepresentation();
     }
+
+    /**
+     * Get user role from Keycloak
+     * Checks realm roles and returns the highest priority role (ADMIN > STAFF >
+     * USER)
+     * 
+     * @param userId Keycloak user ID
+     * @return User role (ADMIN, STAFF, or USER)
+     */
+    public String getUserRole(String userId) {
+        try {
+            // Get user's realm roles
+            List<String> roles = adminKeycloak.realm(realm)
+                    .users()
+                    .get(userId)
+                    .roles()
+                    .realmLevel()
+                    .listEffective()
+                    .stream()
+                    .map(roleRepresentation -> roleRepresentation.getName().toUpperCase())
+                    .toList();
+
+            log.info("User {} has roles: {}", userId, roles);
+
+            // Check for admin role first (highest priority)
+            if (roles.contains("ADMIN")) {
+                return "ADMIN";
+            }
+
+            // Then check for staff role
+            if (roles.contains("STAFF")) {
+                return "STAFF";
+            }
+
+            // Default to USER role
+            return "USER";
+
+        } catch (Exception e) {
+            log.error("Error getting user role for userId: {}", userId, e);
+            return "USER"; // Default to USER on error
+        }
+    }
 }

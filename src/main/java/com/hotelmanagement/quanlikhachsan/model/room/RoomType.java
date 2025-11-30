@@ -26,6 +26,12 @@ public class RoomType {
     @Column(name = "price_per_night", nullable = false, precision = 10, scale = 2)
     private BigDecimal pricePerNight;
 
+    @Column(name = "capacity")
+    private Integer capacity;
+
+    @Column(name = "size", precision = 10, scale = 2)
+    private BigDecimal size;
+
     // @OneToMany(mappedBy = "roomType")
     // @Builder.Default
     // private List<Room> rooms = new ArrayList<>();

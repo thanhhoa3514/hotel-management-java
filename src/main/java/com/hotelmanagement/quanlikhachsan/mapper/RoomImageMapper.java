@@ -1,13 +1,13 @@
 package com.hotelmanagement.quanlikhachsan.mapper;
 
 import com.hotelmanagement.quanlikhachsan.dto.response.RoomImageResponse;
-import com.hotelmanagement.quanlikhachsan.model.room.RoomImages;
+import com.hotelmanagement.quanlikhachsan.model.room.RoomImage;
 import org.springframework.stereotype.Component;
 
 @Component
 public class RoomImageMapper {
 
-    public RoomImageResponse toResponse(RoomImages image) {
+    public RoomImageResponse toResponse(RoomImage image) {
         return new RoomImageResponse(
                 image.getId(),
                 image.getRoom().getId(),

@@ -38,6 +38,6 @@ public class Room {
 
     @OneToMany(mappedBy = "room", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
-    private List<RoomImages> images = new ArrayList<>();
+    private List<RoomImage> images = new ArrayList<>();
 
 }

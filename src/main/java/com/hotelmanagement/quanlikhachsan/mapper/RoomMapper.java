@@ -9,7 +9,9 @@ import com.hotelmanagement.quanlikhachsan.model.room.RoomStatus;
 import com.hotelmanagement.quanlikhachsan.model.room.RoomType;
 import org.springframework.stereotype.Component;
 
+import java.util.UUID;
 import java.util.stream.Collectors;
+
 @Component
 public class RoomMapper {
 
@@ -21,11 +23,18 @@ public class RoomMapper {
 
     public RoomResponse toResponse(Room room) {
         return new RoomResponse(
-                room.getId(),
+                UUID.fromString(room.getId()),
                 room.getRoomNumber(),
-                new RoomTypeResponse(room.getType().getId(), room.getType().getName(),
-                        room.getType().getDescription(), room.getType().getPricePerNight()),
-                new RoomStatusResponse(room.getStatus().getId(), room.getStatus().getName()),
+                new RoomTypeResponse(
+                        UUID.fromString(room.getType().getId()),
+                        room.getType().getName(),
+                        room.getType().getDescription(),
+                        room.getType().getPricePerNight(),
+                        room.getType().getCapacity(),
+                        room.getType().getSize()),
+                new RoomStatusResponse(
+                        UUID.fromString(room.getStatus().getId()),
+                        room.getStatus().getName()),
                 room.getFloor(),
                 room.getNote(),
                 room.getImages().stream()
@@ -35,9 +44,9 @@ public class RoomMapper {
 
     public Room toEntity(RoomRequest request) {
         RoomType roomType = RoomType.builder().id(request.roomTypeId()).build();
-        RoomStatus roomStatus = request.roomStatusId() != null 
-            ? RoomStatus.builder().id(request.roomStatusId()).build()
-            : null;
+        RoomStatus roomStatus = request.roomStatusId() != null
+                ? RoomStatus.builder().id(request.roomStatusId()).build()
+                : null;
 
         return Room.builder()
                 .roomNumber(request.roomNumber())

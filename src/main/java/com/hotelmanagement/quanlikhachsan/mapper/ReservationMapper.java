@@ -2,12 +2,14 @@ package com.hotelmanagement.quanlikhachsan.mapper;
 
 import com.hotelmanagement.quanlikhachsan.dto.response.RoomImageResponse;
 import com.hotelmanagement.quanlikhachsan.dto.response.RoomResponse;
+import com.hotelmanagement.quanlikhachsan.dto.response.RoomStatusResponse;
 import com.hotelmanagement.quanlikhachsan.dto.response.RoomTypeResponse;
 import com.hotelmanagement.quanlikhachsan.dto.response.guest.GuestResponse;
 import com.hotelmanagement.quanlikhachsan.dto.response.reservation.ReservationResponse;
 import com.hotelmanagement.quanlikhachsan.model.reservation.Reservation;
 import org.springframework.stereotype.Component;
 
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Component
@@ -24,16 +26,18 @@ public class ReservationMapper {
                                                 reservation.getGuest().getUpdatedAt()),
                                 reservation.getReservationRooms().stream()
                                                 .map(room -> new RoomResponse(
-                                                                room.getRoom().getId(), room.getRoom().getRoomNumber(),
-                                                                new RoomTypeResponse(room.getRoom().getType().getId(),
+                                                                UUID.fromString(room.getRoom().getId()), room.getRoom().getRoomNumber(),
+                                                                new RoomTypeResponse(UUID.fromString(room.getRoom().getType().getId()),
                                                                                 room.getRoom().getType().getName(),
                                                                                 room.getRoom().getType()
                                                                                                 .getDescription(),
                                                                                 room.getRoom().getType()
-                                                                                                .getPricePerNight()),
-                                                                new com.hotelmanagement.quanlikhachsan.dto.response.RoomStatusResponse(
-                                                                                room.getRoom().getStatus().getId(),
-                                                                                room.getRoom().getStatus().getName()),
+                                                                                                .getPricePerNight(),
+                                                                                room.getRoom().getType().getCapacity(),
+                                                                                room.getRoom().getType().getSize()),
+                                                        new RoomStatusResponse(
+                                                                        UUID.fromString(room.getRoom().getStatus().getId()),
+                                                                        room.getRoom().getStatus().getName()),
                                                                 room.getRoom().getFloor(), room.getRoom().getNote(),
                                                                 room.getRoom().getImages().stream()
                                                                                 .map(image -> new RoomImageResponse(

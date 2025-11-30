@@ -42,4 +42,13 @@ public interface IReservationService {
     ReservationResponse cancelReservation(UUID id);
 
     void deleteReservation(UUID id);
+
+    /**
+     * Count active reservations for a specific room.
+     * Active means status is PENDING, CONFIRMED, or CHECKED_IN.
+     *
+     * @param roomId the room ID
+     * @return count of active reservations
+     */
+    long countActiveReservationsByRoomId(String roomId);
 }

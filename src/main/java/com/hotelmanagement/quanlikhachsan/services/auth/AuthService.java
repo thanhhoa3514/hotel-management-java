@@ -39,7 +39,6 @@ public class AuthService {
 
     /**
      * Authenticate user and generate JWT token
-     * 
      * Flow:
      * 1. Authenticate with Keycloak
      * 2. Retrieve user from Keycloak
@@ -90,18 +89,22 @@ public class AuthService {
                 log.info("Successfully JIT provisioned guest: {}", request.email());
             }
 
-            // Step 4: Generate our own JWT token
+            // Step 4: Get user role from Keycloak
+            String userRole = keycloakAuthService.getUserRole(keycloakUserId);
+            log.info("User {} has role: {}", request.email(), userRole);
+
+            // Step 5: Generate our own JWT token with role from Keycloak
             String jwtToken = jwtUtil.generateToken(
                     guest.id(),
                     request.email(),
                     guest.fullName(),
-                    "USER");
+                    userRole); // Use role from Keycloak
 
             UserInfo userInfo = new UserInfo(
                     guest.id(),
                     guest.fullName(),
                     request.email(),
-                    "USER");
+                    userRole); // Use role from Keycloak
 
             log.info("User logged in successfully: {}", request.email());
             return AuthResponse.of(jwtToken, jwtUtil.getExpirationTime(), userInfo);
@@ -156,18 +159,22 @@ public class AuthService {
 
             GuestResponse guest = guestService.createGuest(guestRequest);
 
-            // Step 4: Generate JWT token
+            // Step 4: Get user role from Keycloak
+            String userRole = keycloakAuthService.getUserRole(keycloakUserId);
+            log.info("New user {} has role: {}", request.email(), userRole);
+
+            // Step 5: Generate JWT token with role from Keycloak
             String jwtToken = jwtUtil.generateToken(
                     guest.id(),
                     request.email(),
                     guest.fullName(),
-                    "USER");
+                    userRole); // Use role from Keycloak
 
             UserInfo userInfo = new UserInfo(
                     guest.id(),
                     guest.fullName(),
                     request.email(),
-                    "USER");
+                    userRole); // Use role from Keycloak
 
             log.info("User registered successfully: {}", request.email());
             return AuthResponse.of(jwtToken, jwtUtil.getExpirationTime(), userInfo);
