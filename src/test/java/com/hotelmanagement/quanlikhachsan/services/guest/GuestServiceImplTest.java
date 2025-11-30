@@ -47,29 +47,27 @@ class GuestServiceImplTest {
     void setUp() {
         guestId = UUID.randomUUID();
         keycloakUserId = UUID.randomUUID();
-        
+
         guestRequest = new GuestRequest(
                 "Test Guest",
                 "test@example.com",
                 "1234567890",
                 "Test Address",
                 "password123",
-                null
-        );
+                null);
 
         guest = new Guest();
-        guest.setId(guestId.toString());
+        guest.setId(guestId);
         guest.setFullName("Test Guest");
         guest.setEmail("test@example.com");
         guest.setKeycloakUserId(keycloakUserId);
 
         guestResponse = new GuestResponse(
-                guestId.toString(),
+                guestId,
                 "Test Guest",
                 keycloakUserId,
                 null,
-                null
-        );
+                null);
     }
 
     @Test

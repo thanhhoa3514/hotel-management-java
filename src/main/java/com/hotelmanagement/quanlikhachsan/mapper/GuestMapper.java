@@ -1,6 +1,5 @@
 package com.hotelmanagement.quanlikhachsan.mapper;
 
-
 import com.hotelmanagement.quanlikhachsan.dto.request.guest.GuestRequest;
 import com.hotelmanagement.quanlikhachsan.dto.response.guest.GuestResponse;
 import com.hotelmanagement.quanlikhachsan.model.guest.Guest;
@@ -11,7 +10,6 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class GuestMapper {
-
 
     /**
      *
@@ -32,7 +30,7 @@ public class GuestMapper {
      *
      * @param guest
      * @param request
-     * update Guest Information with new request
+     *                update Guest Information with new request
      */
     public void updateEntity(Guest guest, GuestRequest request) {
         guest.setFullName(request.fullName());
@@ -44,7 +42,6 @@ public class GuestMapper {
         }
     }
 
-
     /**
      *
      * @param guest
@@ -52,7 +49,7 @@ public class GuestMapper {
      */
     public GuestResponse toResponse(Guest guest) {
         return new GuestResponse(
-                guest.getId(),
+                guest.getId().toString(),
                 guest.getFullName(),
                 guest.getKeycloakUserId(),
                 guest.getCreatedAt(),

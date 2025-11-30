@@ -18,6 +18,5 @@ public interface GuestRepository extends JpaRepository<Guest, UUID> {
     boolean existsByEmail(String email);
 
     boolean existsByKeycloakUserId(UUID keycloakUserId);
-    Optional<Guest> findByUserId(UUID UserId);
 
 }

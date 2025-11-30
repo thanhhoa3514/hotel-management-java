@@ -63,9 +63,32 @@ public class AuthService {
             UserRepresentation keycloakUser = keycloakAuthService.getUserByEmail(request.email());
             String keycloakUserId = keycloakUser.getId();
 
-            // Step 3: Get guest info from database
-            GuestResponse guest = guestService.getGuestByKeycloakUserId(
-                    java.util.UUID.fromString(keycloakUserId));
+            // Step 3: Get guest info from database or create if not exists (JIT
+            // Provisioning)
+            GuestResponse guest;
+            try {
+                guest = guestService.getGuestByKeycloakUserId(
+                        java.util.UUID.fromString(keycloakUserId));
+            } catch (Exception e) {
+                // User exists in Keycloak but not in DB -> Create local user
+                log.info("User not found in local DB, creating new guest for: {}", request.email());
+
+                String firstName = keycloakUser.getFirstName();
+                String lastName = keycloakUser.getLastName();
+                String fullName = (firstName != null ? firstName : "") + " " + (lastName != null ? lastName : "");
+                fullName = fullName.trim().isEmpty() ? "User" : fullName.trim();
+
+                GuestRequest newGuestRequest = new GuestRequest(
+                        fullName,
+                        request.email(),
+                        null, // phone
+                        null, // address
+                        java.util.UUID.randomUUID().toString(), // dummy password
+                        java.util.UUID.fromString(keycloakUserId));
+
+                guest = guestService.createGuest(newGuestRequest);
+                log.info("Successfully JIT provisioned guest: {}", request.email());
+            }
 
             // Step 4: Generate our own JWT token
             String jwtToken = jwtUtil.generateToken(

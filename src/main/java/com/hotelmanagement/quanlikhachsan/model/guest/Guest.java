@@ -1,10 +1,10 @@
 package com.hotelmanagement.quanlikhachsan.model.guest;
+
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+
 import java.util.UUID;
 
 @Entity
@@ -17,8 +17,8 @@ import java.util.UUID;
 public class Guest {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
 
     @Column(name = "full_name", nullable = false, length = 100)
     private String fullName;
@@ -41,9 +41,9 @@ public class Guest {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-//    @OneToMany(mappedBy = "guest", cascade = CascadeType.ALL)
-//    @Builder.Default
-//    private List<Reservation> reservations = new ArrayList<>();
+    // @OneToMany(mappedBy = "guest", cascade = CascadeType.ALL)
+    // @Builder.Default
+    // private List<Reservation> reservations = new ArrayList<>();
 
     @PrePersist
     protected void onCreate() {

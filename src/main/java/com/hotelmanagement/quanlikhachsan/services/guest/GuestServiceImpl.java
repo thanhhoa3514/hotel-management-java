@@ -26,22 +26,31 @@ import java.util.UUID;
 public class GuestServiceImpl implements IGuestService {
 
     private final GuestRepository guestRepository;
-    private final IKeycloakService  keycloakService;
+    private final IKeycloakService keycloakService;
     private final GuestMapper guestMapper;
+
     @Override
     public GuestResponse createGuest(GuestRequest request) {
         log.debug("Creating guest for email: {}", request.email());
 
-        // Create user in Keycloak
-        String keycloakUserId = keycloakService.createUser(
-                request.email(),
-                request.password(),
-                request.fullName(), // Assuming first name is full name for now, or split if needed
-                "" // Last name empty for now
-        );
+        UUID keycloakId;
+
+        if (request.keycloakUserId() != null) {
+            // JIT Provisioning: User already exists in Keycloak
+            log.debug("Using existing Keycloak user ID for JIT provisioning: {}", request.keycloakUserId());
+            keycloakId = request.keycloakUserId();
+        } else {
+            // Normal Registration: Create user in Keycloak first
+            String keycloakUserId = keycloakService.createUser(
+                    request.email(),
+                    request.password(),
+                    request.fullName(),
+                    "");
+            keycloakId = UUID.fromString(keycloakUserId);
+        }
 
         Guest guest = guestMapper.toEntity(request);
-        guest.setKeycloakUserId(UUID.fromString(keycloakUserId));
+        guest.setKeycloakUserId(keycloakId);
 
         Guest savedGuest = guestRepository.save(guest);
 
@@ -97,7 +106,8 @@ public class GuestServiceImpl implements IGuestService {
         guest.setEmail(request.email());
         guest.setPhone(request.phone());
         guest.setAddress(request.address());
-        // Note: Password and Keycloak ID are usually not updated here directly or need special handling
+        // Note: Password and Keycloak ID are usually not updated here directly or need
+        // special handling
         // For now, we assume basic profile update.
 
         Guest updatedGuest = guestRepository.save(guest);
@@ -118,7 +128,8 @@ public class GuestServiceImpl implements IGuestService {
                 .orElseThrow(() -> new ResourceNotFoundException("User", "keycloakUserId", keycloakUserId));
         return Optional.of(user);
     }
-    private Optional<Keycloak> findKeycloakByEmail(String emailUser){
+
+    private Optional<Keycloak> findKeycloakByEmail(String emailUser) {
         Keycloak user = keycloakService.findKeycloakByEmail(emailUser)
                 .orElseThrow(() -> new ResourceNotFoundException("User", "keycloakUserId", emailUser));
         return Optional.of(user);

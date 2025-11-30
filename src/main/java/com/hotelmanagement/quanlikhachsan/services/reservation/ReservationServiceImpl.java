@@ -103,7 +103,7 @@ public class ReservationServiceImpl implements IReservationService {
     @Transactional(readOnly = true)
     public List<ReservationResponse> getReservationsByGuestId(UUID guestId) {
         log.debug("Fetching reservations for guest ID: {}", guestId);
-        return reservationRepository.findByKeycloakUserId(guestId).stream()
+        return reservationRepository.findByGuestKeycloakUserId(guestId).stream()
                 .map(reservationMapper::toResponse)
                 .toList();
     }
@@ -112,8 +112,10 @@ public class ReservationServiceImpl implements IReservationService {
     @Transactional(readOnly = true)
     public List<ReservationResponse> getReservationsByStatus(UUID statusId) {
         // Note: This implementation assumes statusId maps to ReservationStatus enum
-        // Adjust if using database lookup table for statuses
-        log.debug("Fetching reservations by status");
+        // For now, we'll return all reservations. In a real implementation,
+        // you would map statusId to ReservationStatus enum
+        log.debug("Fetching reservations by status ID: {}", statusId);
+        // TODO: Implement proper status lookup if using database lookup table
         return reservationRepository.findAll().stream()
                 .filter(r -> r.getStatus() != null)
                 .map(reservationMapper::toResponse)
@@ -396,7 +398,7 @@ public class ReservationServiceImpl implements IReservationService {
         BigDecimal total = BigDecimal.ZERO;
         for (Room room : rooms) {
             if (room.getType() != null && room.getType().getPricePerNight() != null) {
-                BigDecimal roomPrice = BigDecimal.valueOf(room.getType().getPricePerNight())
+                BigDecimal roomPrice = room.getType().getPricePerNight()
                         .multiply(BigDecimal.valueOf(nights));
                 total = total.add(roomPrice);
             }

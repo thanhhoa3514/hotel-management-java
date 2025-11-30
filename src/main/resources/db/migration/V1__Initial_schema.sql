@@ -61,7 +61,7 @@ CREATE TABLE IF NOT EXISTS room_images (
 
 -- Guests
 CREATE TABLE IF NOT EXISTS guests (
-    id VARCHAR(36) PRIMARY KEY DEFAULT uuid_generate_v4()::text,
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     full_name VARCHAR(100) NOT NULL,
     email VARCHAR(100) NOT NULL UNIQUE,
     phone VARCHAR(20),
@@ -73,7 +73,7 @@ CREATE TABLE IF NOT EXISTS guests (
 
 -- Staff
 CREATE TABLE IF NOT EXISTS staff (
-    id VARCHAR(36) PRIMARY KEY DEFAULT uuid_generate_v4()::text,
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     full_name VARCHAR(100) NOT NULL,
     email VARCHAR(100) NOT NULL UNIQUE,
     position VARCHAR(50),
@@ -85,7 +85,7 @@ CREATE TABLE IF NOT EXISTS staff (
 -- Reservations (using enum for status instead of lookup table)
 CREATE TABLE IF NOT EXISTS reservations (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    guest_id VARCHAR(36) NOT NULL REFERENCES guests(id) ON DELETE CASCADE,
+    guest_id UUID NOT NULL REFERENCES guests(id) ON DELETE CASCADE,
     status VARCHAR(20) NOT NULL DEFAULT 'PENDING',
     check_in DATE NOT NULL,
     check_out DATE NOT NULL,

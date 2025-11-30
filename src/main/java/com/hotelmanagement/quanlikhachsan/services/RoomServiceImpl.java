@@ -154,7 +154,7 @@ public class RoomServiceImpl implements IRoomService {
             }
 
             BigDecimal pricePerNight = room.getType() != null && room.getType().getPricePerNight() != null
-                    ? BigDecimal.valueOf(room.getType().getPricePerNight())
+                    ? room.getType().getPricePerNight()
                     : BigDecimal.ZERO;
 
             if (isAvailable) {

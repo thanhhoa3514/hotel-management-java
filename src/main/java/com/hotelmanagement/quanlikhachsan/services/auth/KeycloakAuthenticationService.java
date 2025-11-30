@@ -36,7 +36,7 @@ public class KeycloakAuthenticationService {
     /**
      * Authenticate user with Keycloak and retrieve access token
      * 
-     * @param email User email
+     * @param email    User email
      * @param password User password
      * @return AccessTokenResponse if authentication successful
      * @throws BadCredentialsException if credentials are invalid
@@ -79,7 +79,7 @@ public class KeycloakAuthenticationService {
     public UserRepresentation getUserByEmail(String email) {
         List<UserRepresentation> users = adminKeycloak.realm(realm)
                 .users()
-                .search(email, true); // exact match
+                .search(null, null, null, email, 0, 1); // search by email
 
         if (users.isEmpty()) {
             log.error("User not found in Keycloak: {}", email);

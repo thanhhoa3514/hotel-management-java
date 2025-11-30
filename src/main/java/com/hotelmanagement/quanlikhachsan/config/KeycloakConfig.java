@@ -12,10 +12,10 @@ public class KeycloakConfig {
     @Value("${keycloak.auth-server-url:http://localhost:8180}")
     private String authServerUrl;
 
-    @Value("${keycloak.realm:master}")
+    @Value("${keycloak.admin.realm:master}")
     private String realm;
 
-    @Value("${keycloak.resource:admin-cli}")
+    @Value("${keycloak.admin.client-id:admin-cli}")
     private String clientId;
 
     @Value("${keycloak.credentials.username:admin}")
