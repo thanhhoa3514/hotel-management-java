@@ -1,9 +1,10 @@
 package com.hotelmanagement.quanlikhachsan.dto.response;
 
 import java.util.List;
+import java.util.UUID;
 
 public record RoomResponse(
-        String id,
+        UUID id,
         String roomNumber,
         RoomTypeResponse roomType,
         RoomStatusResponse roomStatus,

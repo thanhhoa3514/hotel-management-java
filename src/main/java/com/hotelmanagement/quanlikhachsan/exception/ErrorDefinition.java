@@ -9,6 +9,11 @@ public enum ErrorDefinition {
     ROOM_NOT_FOUND("Room not found.", HttpStatus.NOT_FOUND, "ROOM_001"),
     DUPLICATE_ID("Duplicate ID.", HttpStatus.CONFLICT, "ROOM_002"),
     ROOM_IN_USE("Cannot delete room that is currently occupied or reserved.", HttpStatus.CONFLICT, "ROOM_003"),
+    ROOM_IMAGE_NOT_FOUND("Room image not found.", HttpStatus.NOT_FOUND, "ROOM_004"),
+    ROOM_IMAGE_UPLOAD_FAILED("Failed to upload room image.", HttpStatus.INTERNAL_SERVER_ERROR, "ROOM_005"),
+    ROOM_IMAGE_DELETE_FAILED("Failed to delete room image.", HttpStatus.INTERNAL_SERVER_ERROR, "ROOM_006"),
+    ROOM_TYPE_NOT_FOUND("Room type not found.", HttpStatus.NOT_FOUND, "ROOM_007"),
+    ROOM_STATUS_NOT_FOUND("Room status not found.", HttpStatus.NOT_FOUND, "ROOM_008"),
 
     // Reservation errors
     RESERVATION_NOT_FOUND("Reservation not found.", HttpStatus.NOT_FOUND, "RESERVATION_001"),

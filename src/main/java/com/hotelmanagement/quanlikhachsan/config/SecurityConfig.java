@@ -35,7 +35,10 @@ public class SecurityConfig {
                         .requestMatchers("/api/v1/auth/**").permitAll()
                         .requestMatchers("/api/v1/guests/**").permitAll()
                         .requestMatchers("/api/v1/rooms/**").permitAll() // Allow public access to rooms
+                        .requestMatchers("/api/v1/room-types/**").permitAll() // Allow public access to room types
+                        .requestMatchers("/api/v1/room-statuses/**").permitAll() // Allow public access to room statuses
                         .requestMatchers("/api/v1/reservations/**").permitAll() // Allow public access to reservations
+                        .requestMatchers("/uploads/**").permitAll() // Allow public access to uploaded images
                         // Protected endpoints
                         .anyRequest().authenticated())
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);

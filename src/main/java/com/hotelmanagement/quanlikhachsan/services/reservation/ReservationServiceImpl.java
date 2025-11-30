@@ -339,6 +339,22 @@ public class ReservationServiceImpl implements IReservationService {
         log.info("Reservation {} deleted successfully", id);
     }
 
+    @Override
+    public long countActiveReservationsByRoomId(String roomId) {
+        log.debug("Counting active reservations for room ID: {}", roomId);
+
+        // Count reservations with status PENDING, CONFIRMED, or CHECKED_IN
+        List<ReservationStatus> activeStatuses = List.of(
+                ReservationStatus.PENDING,
+                ReservationStatus.CONFIRMED,
+                ReservationStatus.CHECKED_IN);
+
+        return reservationRoomRepository.findByRoomId(roomId).stream()
+                .map(reservationRoom -> reservationRoom.getReservation())
+                .filter(reservation -> activeStatuses.contains(reservation.getStatus()))
+                .count();
+    }
+
     // ========== Private Helper Methods ==========
 
     private Reservation findReservationById(UUID id) {

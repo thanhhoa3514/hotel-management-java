@@ -1,7 +1,8 @@
 package com.hotelmanagement.quanlikhachsan.dto.response;
 
+import java.util.UUID;
+
 public record RoomStatusResponse(
-        String id,
-        String name
-) {
+                UUID id,
+                String name) {
 }
