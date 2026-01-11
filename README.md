@@ -110,7 +110,31 @@ Ensure you have the following installed:
 
 ---
 
-## Quick Start
+## Automated Setup (Recommended)
+
+For a streamlined setup experience, use our automated scripts:
+
+**Windows:**
+```cmd
+setup.cmd
+```
+
+**Linux/macOS:**
+```bash
+chmod +x setup.sh
+./setup.sh
+```
+
+These scripts will:
+- Check all prerequisites (Java, Maven, Docker)
+- Start Docker services (PostgreSQL, Redis, Keycloak)
+- Wait for all services to be healthy
+- Build the application
+- Optionally start the application
+
+---
+
+## Quick Start (Manual)
 
 ### 1. Clone the Repository
 
