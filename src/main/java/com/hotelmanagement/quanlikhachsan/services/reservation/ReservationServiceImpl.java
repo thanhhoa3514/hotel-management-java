@@ -45,7 +45,7 @@ public class ReservationServiceImpl implements IReservationService {
         validateDateRange(request.checkIn(), request.checkOut());
 
         // Find guest by keycloakUserId
-        Guest guest = guestRepository.findByKeycloakUserId(request.keycloakUserId())
+        Guest guest = guestRepository.findById(request.keycloakUserId())
                 .orElseThrow(() -> ErrorDefinition.GUEST_NOT_FOUND.toAppError()
                         .withDetail("keycloakUserId", request.keycloakUserId()));
 
