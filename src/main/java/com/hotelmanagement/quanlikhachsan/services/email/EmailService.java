@@ -84,6 +84,156 @@ public class EmailService {
     }
 
     /**
+     * Send booking confirmation email after successful payment
+     * 
+     * @param toEmail       Recipient email
+     * @param fullName      Guest's full name
+     * @param reservationId Reservation ID
+     * @param roomInfo      Room information (number, type)
+     * @param checkIn       Check-in date
+     * @param checkOut      Check-out date
+     * @param totalAmount   Total payment amount
+     */
+    public void sendBookingConfirmationEmail(String toEmail, String fullName, String reservationId,
+            String roomInfo, String checkIn, String checkOut, String totalAmount) {
+        try {
+            MimeMessage message = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+
+            helper.setFrom(fromAddress, fromName);
+            helper.setTo(toEmail);
+            helper.setSubject(" Xác nhận đặt phòng thành công - " + reservationId.substring(0, 8).toUpperCase());
+
+            String htmlContent = buildBookingConfirmationEmailHtml(fullName, reservationId, roomInfo, checkIn, checkOut,
+                    totalAmount);
+            helper.setText(htmlContent, true);
+
+            mailSender.send(message);
+            log.info("Booking confirmation email sent successfully to: {}", toEmail);
+
+        } catch (Exception e) {
+            log.error("Failed to send booking confirmation email to: {}", toEmail, e);
+            // Don't throw exception - confirmation email is not critical for transaction
+        }
+    }
+
+    /**
+     * Build HTML content for booking confirmation email
+     */
+    private String buildBookingConfirmationEmailHtml(String fullName, String reservationId,
+            String roomInfo, String checkIn, String checkOut, String totalAmount) {
+        return """
+                <!DOCTYPE html>
+                <html lang="vi">
+                <head>
+                    <meta charset="UTF-8">
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                </head>
+                <body style="margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #10b981 0%%, #059669 100%%);">
+                    <table width="100%%" cellpadding="0" cellspacing="0" style="background: linear-gradient(135deg, #10b981 0%%, #059669 100%%);">
+                        <tr>
+                            <td align="center" style="padding: 40px 20px;">
+                                <table width="600" cellpadding="0" cellspacing="0" style="background: white; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.2);">
+                                    <!-- Header -->
+                                    <tr>
+                                        <td style="padding: 40px 40px 20px; text-align: center; background: linear-gradient(135deg, #10b981 0%%, #059669 100%%); border-radius: 20px 20px 0 0;">
+                                            <h1 style="margin: 0; color: white; font-size: 48px;">✅</h1>
+                                            <h2 style="margin: 10px 0 0; color: white; font-size: 24px; font-weight: 700;">
+                                                Đặt phòng thành công!
+                                            </h2>
+                                        </td>
+                                    </tr>
+
+                                    <!-- Content -->
+                                    <tr>
+                                        <td style="padding: 30px 40px;">
+                                            <p style="margin: 0 0 20px; color: #374151; font-size: 16px; line-height: 1.6;">
+                                                Xin chào <strong>%s</strong>,
+                                            </p>
+                                            <p style="margin: 0 0 30px; color: #6b7280; font-size: 15px; line-height: 1.6;">
+                                                Cảm ơn bạn đã đặt phòng tại HotelPro. Thanh toán của bạn đã được xử lý thành công. Dưới đây là thông tin đặt phòng của bạn:
+                                            </p>
+
+                                            <!-- Booking Details Box -->
+                                            <table width="100%%" cellpadding="0" cellspacing="0" style="background: #f9fafb; border-radius: 12px; border: 1px solid #e5e7eb;">
+                                                <tr>
+                                                    <td style="padding: 25px;">
+                                                        <table width="100%%" cellpadding="0" cellspacing="0">
+                                                            <tr>
+                                                                <td style="padding: 8px 0; border-bottom: 1px solid #e5e7eb;">
+                                                                    <span style="color: #6b7280; font-size: 14px;">Mã đặt phòng:</span>
+                                                                    <span style="float: right; color: #111827; font-weight: 600; font-family: monospace; font-size: 14px;">%s</span>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td style="padding: 8px 0; border-bottom: 1px solid #e5e7eb;">
+                                                                    <span style="color: #6b7280; font-size: 14px;">Phòng:</span>
+                                                                    <span style="float: right; color: #111827; font-weight: 600; font-size: 14px;">%s</span>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td style="padding: 8px 0; border-bottom: 1px solid #e5e7eb;">
+                                                                    <span style="color: #6b7280; font-size: 14px;">Ngày nhận phòng:</span>
+                                                                    <span style="float: right; color: #111827; font-weight: 600; font-size: 14px;">%s</span>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td style="padding: 8px 0; border-bottom: 1px solid #e5e7eb;">
+                                                                    <span style="color: #6b7280; font-size: 14px;">Ngày trả phòng:</span>
+                                                                    <span style="float: right; color: #111827; font-weight: 600; font-size: 14px;">%s</span>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td style="padding: 12px 0 0;">
+                                                                    <span style="color: #111827; font-size: 16px; font-weight: 700;">💰 Tổng thanh toán:</span>
+                                                                    <span style="float: right; color: #10b981; font-weight: 700; font-size: 18px;">%s</span>
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                    </td>
+                                                </tr>
+                                            </table>
+
+                                            <!-- Info Box -->
+                                            <table width="100%%" cellpadding="0" cellspacing="0" style="background: #ecfdf5; border-left: 4px solid #10b981; border-radius: 8px; margin: 25px 0;">
+                                                <tr>
+                                                    <td style="padding: 15px 20px;">
+                                                        <p style="margin: 0; color: #065f46; font-size: 14px;">
+                                                            Vui lòng xuất trình email này hoặc mã đặt phòng khi đến nhận phòng.
+                                                        </p>
+                                                    </td>
+                                                </tr>
+                                            </table>
+
+                                            <p style="margin: 20px 0 0; color: #6b7280; font-size: 14px; line-height: 1.6;">
+                                                Nếu bạn có bất kỳ câu hỏi nào, vui lòng liên hệ với chúng tôi qua email hoặc hotline.
+                                            </p>
+                                        </td>
+                                    </tr>
+
+                                    <!-- Footer -->
+                                    <tr>
+                                        <td style="padding: 30px 40px; background: #f9fafb; border-radius: 0 0 20px 20px;">
+                                            <p style="margin: 0; color: #9ca3af; font-size: 13px; text-align: center;">
+                                                © 2024 HotelPro Management System. All rights reserved.
+                                            </p>
+                                            <p style="margin: 10px 0 0; color: #9ca3af; font-size: 12px; text-align: center;">
+                                                📧 support@hotelpro.vn | 1900-xxxx
+                                            </p>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                </body>
+                </html>
+                """
+                .formatted(fullName, reservationId.substring(0, 8).toUpperCase(), roomInfo, checkIn, checkOut,
+                        totalAmount);
+    }
+
+    /**
      * Build HTML content for verification email
      */
     private String buildVerificationEmailHtml(String otp, String fullName, long expirationMinutes) {

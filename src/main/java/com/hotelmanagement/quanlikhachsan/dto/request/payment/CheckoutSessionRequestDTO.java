@@ -2,8 +2,8 @@ package com.hotelmanagement.quanlikhachsan.dto.request.payment;
 
 import java.util.UUID;
 
-public record PaymentRequestDTO(
+public record CheckoutSessionRequestDTO(
         UUID reservationId,
-        String token,
-        long amount) {
+        String successUrl,
+        String cancelUrl) {
 }
