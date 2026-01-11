@@ -293,7 +293,7 @@ public class CacheConfig {
 
 ---
 
-## 🔐 Specific Patterns for Hotel Management
+## Specific Patterns for Hotel Management
 
 ### Pattern 1: OTP Storage (Already Implemented)
 

@@ -25,7 +25,20 @@ public enum ErrorDefinition {
     RESERVATION_ALREADY_CHECKED_IN("Reservation is already checked in.", HttpStatus.CONFLICT, "RESERVATION_006"),
     RESERVATION_CANNOT_MODIFY("Cannot modify a reservation that is checked out or cancelled.", HttpStatus.CONFLICT,
             "RESERVATION_007"),
-    PAST_CHECK_IN_DATE("Check-in date cannot be in the past.", HttpStatus.BAD_REQUEST, "RESERVATION_008");
+    PAST_CHECK_IN_DATE("Check-in date cannot be in the past.", HttpStatus.BAD_REQUEST, "RESERVATION_008"),
+
+    // Payment errors
+    PAYMENT_NOT_FOUND("Payment not found.", HttpStatus.NOT_FOUND, "PAYMENT_001"),
+    PAYMENT_FAILED("Payment processing failed. Please try again or use a different payment method.",
+            HttpStatus.BAD_REQUEST, "PAYMENT_002"),
+    PAYMENT_AMOUNT_INVALID("Payment amount must be positive and within acceptable limits.", HttpStatus.BAD_REQUEST,
+            "PAYMENT_003"),
+    PAYMENT_STRIPE_ERROR("Payment processing error: ", HttpStatus.BAD_REQUEST, "PAYMENT_004"),
+    PAYMENT_RATE_LIMITED("Too many payment attempts. Please try again later.", HttpStatus.TOO_MANY_REQUESTS,
+            "PAYMENT_005"),
+    PAYMENT_WEBHOOK_ERROR("Webhook processing failed.", HttpStatus.BAD_REQUEST, "PAYMENT_006"),
+    PAYMENT_SESSION_EXPIRED("Payment session has expired. Please initiate a new payment.",
+            HttpStatus.GONE, "PAYMENT_007");
 
     private final String message;
     private final HttpStatus statusCode;
